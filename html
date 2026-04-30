@@ -1,1 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SIM - Sistema Integrado Madrugada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f7 100%);
+            color: #1a2c3e;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Container principal */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .header h1 {
+            font-size: 2.6rem;
+            background: linear-gradient(135deg, #0b2b40, #1c6e6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #2c5a6e;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Abas (tabs) */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #cbdbe0;
+            padding-bottom: 0.75rem;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #3a5e6e;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn i {
+            font-size: 1.25rem;
+        }
+
+        .tab-btn:hover {
+            background: #dce5ef;
+            color: #0f4c5c;
+        }
+
+        .tab-btn.active {
+            background: #1a6d6d;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Conteúdo das abas */
+        .tab-pane {
+            display: none;
+            animation: fade 0.25s ease;
+        }
+
+        .tab-pane.active-pane {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(6px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Grid de ícones/cards */
+        .grid-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1.2rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .icon-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.2rem 0.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: #1e2f3a;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .icon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px -10px rgba(0,0,0,0.15);
+            border-color: #9bc1c1;
+            background: #fefefe;
+        }
+
+        .icon-card i {
+            font-size: 2.2rem;
+            color: #1a6d6d;
+        }
+
+        .icon-card span {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .icon-card small {
+            font-size: 0.7rem;
+            color: #6f8f9f;
+        }
+
+        /* Seção de passos (workflow sem título grande) */
+        .workflow-steps {
+            background: rgba(255,255,240,0.4);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            margin-top: 1.8rem;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(100,150,150,0.2);
+        }
+
+        .steps-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .step-item {
+            flex: 1;
+            min-width: 160px;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            text-align: center;
+            transition: 0.2s;
+            border-left: 4px solid #1c8a6e;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+
+        .step-number {
+            background: #e6f4f0;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 60px;
+            font-weight: bold;
+            color: #196b6b;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .step-item a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1e5a6a;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .step-item a i {
+            font-size: 1.8rem;
+            color: #2d7a6e;
+        }
+
+        .step-item a span {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .step-desc {
+            font-size: 0.7rem;
+            color: #4f6f7a;
+            margin-top: 6px;
+        }
+
+        /* rodapé */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            color: #6d8b99;
+            border-top: 1px solid #cbdbe0;
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 680px) {
+            body { padding: 1rem; }
+            .tab-btn { padding: 0.5rem 1rem; font-size: 0.85rem;}
+            .grid-icons { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));}
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>⚡ SIM</h1>
+        <p>Sistema Integrado Madrugada — tudo que sua operação precisa</p>
+    </div>
+
+    <!-- Abas -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="social">
+            <i>💬</i> Social
+        </button>
+        <button class="tab-btn" data-tab="portais">
+            <i>🗂️</i> Portais
+        </button>
+        <button class="tab-btn" data-tab="ferramentas">
+            <i>🛠️</i> Ferramentas
+        </button>
+    </div>
+
+    <!-- Conteúdo Social -->
+    <div id="social" class="tab-pane active-pane">
+        <div class="grid-icons">
+            <a href="https://teams.microsoft.com/v2/" target="_blank" class="icon-card">
+                <i>💬</i> <span>Microsoft Teams</span> <small>chat/meetings</small>
+            </a>
+            <a href="https://outlook.office365.com/mail/" target="_blank" class="icon-card">
+                <i>📧</i> <span>E-mail</span> <small>Outlook</small>
+            </a>
+            <a href="https://cc.claro.com.br/" target="_blank" class="icon-card">
+                <i>🎧</i> <span>Nice</span> <small>Central Claro</small>
+            </a>
+        </div>
+        <!-- dessa forma não vira bagunça: ícone, nome pequeno -->
+    </div>
+
+    <!-- Conteúdo Portais -->
+    <div id="portais" class="tab-pane">
+        <div class="grid-icons">
+            <a href="http://10.29.5.216/scr/ui-newsletter.php" target="_blank" class="icon-card">
+                <i>📰</i> <span>SCR</span> <small>Newsletter</small>
+            </a>
+            <a href="https://pontodigital.claro.com.br/login" target="_blank" class="icon-card">
+                <i>⏱️</i> <span>Ponto Digital</span> <small>marcação</small>
+            </a>
+            <a href="http://portalclarobrasil/" target="_blank" class="icon-card">
+                <i>🌐</i> <span>Portal Claro</span> <small>intranet</small>
+            </a>
+            <a href="https://portalrh.claro.com.br/ords/rhportal/rhlgweb.show" target="_blank" class="icon-card">
+                <i>👥</i> <span>Portal RH</span> <small>recursos humanos</small>
+            </a>
+            <a href="https://hdim.fa.us2.oraclecloud.com/hcmUI/faces/FuseWelcome?_adf.ctrl-state=eqvx7jj5m_142&fnd=%3B%3B%3B%3Bfalse%3B256%3B%3B%3B&_afrLoop=3873689643141437" target="_blank" class="icon-card">
+                <i>📚</i> <span>Trilhas</span> <small>Oracle HCM</small>
+            </a>
+            <a href="https://clarobr.atlassian.net/servicedesk/customer/user/login?destination=portals" target="_blank" class="icon-card">
+                <i>🎫</i> <span>Jira</span> <small>service desk</small>
+            </a>
+        </div>
+    </div>
+
+    <!-- Conteúdo Ferramentas (links principais do fluxo) -->
+    <div id="ferramentas" class="tab-pane">
+        <div class="grid-icons">
+            <a href="https://pontodigital.claro.com.br/entrar" target="_blank" class="icon-card">
+                <i>🕒</i> <span>Bater Ponto</span> <small>início expediente</small>
+            </a>
+            <a href="https://nlsoarez.github.io/divisao-equipe-madrugada/" target="_blank" class="icon-card">
+                <i>📅</i> <span>Calendário</span> <small>divisão do dia</small>
+            </a>
+            <a href="https://lirapin.github.io/comunicador-de-falhas/" target="_blank" class="icon-card">
+                <i>⚠️</i> <span>Comunicador</span> <small>registro de falhas</small>
+            </a>
+            <a href="https://lirapin.github.io/gerador-de-mensagens/" target="_blank" class="icon-card">
+                <i>✍️</i> <span>Gerador Msgs</span> <small>mensagens prontas</small>
+            </a>
+            <a href="https://dashboard-indicadores-cop-production.up.railway.app/" target="_blank" class="icon-card">
+                <i>📊</i> <span>Indicadores</span> <small>dashboard COP</small>
+            </a>
+        </div>
+
+        <!-- Fluxo diário / passo a passo implícito -->
+        <div class="workflow-steps">
+            <div class="steps-container">
+                <div class="step-item">
+                    <a href="https://pontodigital.claro.com.br/entrar" target="_blank">
+                        <div class="step-number">1</div>
+                        <i>⏱️</i>
+                        <span>Bater o ponto</span>
+                        <div class="step-desc">início do turno</div>
+                    </a>
+                </div>
+                <div class="step-item">
+                    <a href="https://nlsoarez.github.io/divisao-equipe-madrugada/" target="_blank">
+                        <div class="step-number">2</div>
+                        <i>📅</i>
+                        <span>Ver calendário</span>
+                        <div class="step-desc">divisão da madrugada</div>
+                    </a>
+                </div>
+                <div class="step-item">
+                    <a href="https://lirapin.github.io/comunicador-de-falhas/" target="_blank">
+                        <div class="step-number">3</div>
+                        <i>⚠️</i>
+                        <span>Registrar falhas</span>
+                        <div class="step-desc">conforme atende área</div>
+                    </a>
+                </div>
+                <div class="step-item">
+                    <a href="https://lirapin.github.io/gerador-de-mensagens/" target="_blank">
+                        <div class="step-number">4</div>
+                        <i>✍️</i>
+                        <span>Gerar mensagens</span>
+                        <div class="step-desc">comunicar equipe</div>
+                    </a>
+                </div>
+                <div class="step-item">
+                    <a href="https://dashboard-indicadores-cop-production.up.railway.app/" target="_blank">
+                        <div class="step-number">5</div>
+                        <i>📊</i>
+                        <span>Consultar indicadores</span>
+                        <div class="step-desc">performance/erros</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        SIM - Sistema Integrado Madrugada • operação mais ágil e organizada
+    </div>
+</div>
+
+<script>
+    // Controle de abas
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            // remove active de todos botões
+            tabs.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            // esconde todos os pains e mostra o atual
+            panes.forEach(pane => pane.classList.remove('active-pane'));
+            document.getElementById(tabId).classList.add('active-pane');
+        });
+    });
+</script>
+</body>
+</html>
